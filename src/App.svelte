@@ -135,7 +135,7 @@
     }
 
     console.debug("Loading currencies data.");
-    return this.state.addon
+    return addon
       .request({
         method: "GET",
         endpoint: "currencies/usd/history",
@@ -159,7 +159,7 @@
       investments:
         options.investmentsFilter === "all" ? null : options.investmentsFilter,
     };
-    return this.state.addon
+    return addon
       .request({
         query,
         method: "GET",
@@ -180,7 +180,7 @@
       investments:
         options.investmentsFilter === "all" ? null : options.investmentsFilter,
     };
-    return this.state.addon
+    return addon
       .request({
         query,
         method: "GET",
@@ -213,7 +213,7 @@
       investments:
         options.investmentsFilter === "all" ? null : options.investmentsFilter,
     };
-    return this.state.addon
+    return addon
       .request({
         query,
         method: "GET",
