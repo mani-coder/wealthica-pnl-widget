@@ -64,6 +64,8 @@
     ]);
     currencyCache = currencyData ? currencyData : currencyCache;
     computePortfolios(portfolioData, transactions, accounts, currencyData);
+    loading = false;
+    console.debug("Done with loading data", { portfolios });
   }
 
   function loadStaticPortfolioData() {
@@ -73,6 +75,7 @@
       parseInstitutionsResponse(INSTITUTIONS_DATA),
       parseCurrencyReponse(CURRENCIES_API_RESPONSE)
     );
+    loading = false;
     console.debug("Static Dev State:", { portfolios });
   }
 
@@ -224,10 +227,18 @@
 </script>
 
 <main>
-  <p class="text-2xl">
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
+  <div class="p-2">
+    {#if loading}
+      Loading....
+    {:else}
+      Loaded data, rendering portfolios.
+      <ul>
+        {#each portfolios as portfolio}
+          <li>{portfolio.date}: {portfolio.deposits}, {portfolio.value}</li>
+        {/each}
+      </ul>
+    {/if}
+  </div>
 </main>
 
 <style global lang="postcss">
