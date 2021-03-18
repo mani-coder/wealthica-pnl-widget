@@ -17,7 +17,7 @@
   let currencyCache: { [K: string]: string };
   let addon: any;
   let loading: boolean;
-  let portfolios: Portfolio[];
+  let portfolios: Portfolio[] = [];
   let privateMode: boolean;
   let timer;
 
