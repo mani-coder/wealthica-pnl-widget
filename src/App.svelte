@@ -1,34 +1,230 @@
 <script lang="ts">
-  export let name: string;
+  import { Addon } from "@wealthica/wealthica.js/index";
+  import moment from "moment";
+  import {
+    parseCurrencyReponse,
+    parseInstitutionsResponse,
+    parsePortfolioResponse,
+    parseTransactionsResponse,
+  } from "./api";
+  import { TRANSACTIONS_FROM_DATE } from "./constants";
+  import { CURRENCIES_API_RESPONSE } from "./mocks/currencies";
+  import { INSTITUTIONS_DATA } from "./mocks/institutions";
+  import { PORTFOLIO_API_RESPONSE } from "./mocks/portfolio";
+  import { TRANSACTIONS_API_RESPONSE } from "./mocks/transactions";
+  import type { Portfolio } from "./types";
+
+  let currencyCache: { [K: string]: string };
+  let addon: any;
+  let loading: boolean;
+  let portfolios: Portfolio[];
+  let privateMode: boolean;
+  let timer;
+
+  try {
+    addon = new Addon({});
+    addon.on("init", (options) => {
+      console.debug("Addon initialization", options);
+      debounced(options);
+    });
+
+    addon.on("reload", () => {
+      // Start reloading
+      console.debug("Reload invoked!");
+    });
+
+    addon.on("update", (options) => {
+      // Update according to the received options
+      console.debug("Addon update - options: ", options);
+      debounced(options);
+    });
+  } catch (error) {
+    console.warn("Falied to load the addon -- ", error);
+    loadStaticPortfolioData();
+  }
+
+  const debounced = (options) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => load(options), 100);
+  };
+
+  async function load(options) {
+    privateMode = options.privateMode;
+    loading = true;
+    const [
+      currencyData,
+      portfolioData,
+      accounts,
+      transactions,
+    ] = await Promise.all([
+      loadCurrenciesCache(),
+      loadPortfolioData(options),
+      loadInstitutionsData(options),
+      loadTransactions(options),
+    ]);
+    currencyCache = currencyData ? currencyData : currencyCache;
+    computePortfolios(portfolioData, transactions, accounts, currencyData);
+  }
+
+  function loadStaticPortfolioData() {
+    computePortfolios(
+      parsePortfolioResponse(PORTFOLIO_API_RESPONSE),
+      TRANSACTIONS_API_RESPONSE,
+      parseInstitutionsResponse(INSTITUTIONS_DATA),
+      parseCurrencyReponse(CURRENCIES_API_RESPONSE)
+    );
+    console.debug("Static Dev State:", { portfolios });
+  }
+
+  function computePortfolios(
+    portfolioData,
+    transactions,
+    accounts,
+    currencyData
+  ) {
+    const transactionsByDate = parseTransactionsResponse(
+      transactions,
+      currencyData,
+      accounts
+    );
+
+    const portfolioPerDay = Object.keys(portfolioData).reduce((hash, date) => {
+      const data = transactionsByDate[date] || {};
+      hash[date] = {
+        value: portfolioData[date],
+        deposit: data.deposit || 0,
+        withdrawal: data.withdrawal || 0,
+        income: data.income || 0,
+        interest: data.interest || 0,
+      };
+      return hash;
+    }, {});
+
+    const _portfolios: Portfolio[] = [];
+
+    const sortedDates = Object.keys(portfolioPerDay).sort();
+    let deposits = Object.keys(transactionsByDate)
+      .filter((date) => date < sortedDates[0])
+      .reduce((totalDeposits, date) => {
+        const transaction = transactionsByDate[date];
+        totalDeposits += transaction.deposit - transaction.withdrawal;
+        return totalDeposits;
+      }, 0);
+
+    sortedDates.forEach((date) => {
+      const portfolio = portfolioPerDay[date];
+      deposits += portfolio.deposit - portfolio.withdrawal;
+      if (moment(date).isoWeekday() <= 5) {
+        _portfolios.push({
+          date: date,
+          value: portfolio.value,
+          deposits: deposits,
+        });
+      }
+    });
+
+    portfolios = _portfolios;
+  }
+
+  function loadCurrenciesCache() {
+    if (currencyCache) {
+      return null;
+    }
+
+    console.debug("Loading currencies data.");
+    return this.state.addon
+      .request({
+        method: "GET",
+        endpoint: "currencies/usd/history",
+        query: {
+          base: "cad",
+        },
+      })
+      .then((response) => parseCurrencyReponse(response))
+      .catch((error) => {
+        console.error("Failed to load currency data.", error);
+      });
+  }
+
+  function loadPortfolioData(options) {
+    console.debug("Loading portfolio data.");
+    const query = {
+      from: options.dateRangeFilter && options.dateRangeFilter[0],
+      to: options.dateRangeFilter && options.dateRangeFilter[1],
+      groups: options.groupsFilter,
+      institutions: options.institutionsFilter,
+      investments:
+        options.investmentsFilter === "all" ? null : options.investmentsFilter,
+    };
+    return this.state.addon
+      .request({
+        query,
+        method: "GET",
+        endpoint: "portfolio",
+      })
+      .then((response) => parsePortfolioResponse(response))
+      .catch((error) => {
+        console.error("Failed to load portfolio data.", error);
+      });
+  }
+
+  function loadInstitutionsData(options) {
+    console.debug("Loading institutions data..");
+    const query = {
+      assets: true,
+      groups: options.groupsFilter,
+      institutions: options.institutionsFilter,
+      investments:
+        options.investmentsFilter === "all" ? null : options.investmentsFilter,
+    };
+    return this.state.addon
+      .request({
+        query,
+        method: "GET",
+        endpoint: "institutions",
+      })
+      .then((response) =>
+        parseInstitutionsResponse(
+          response,
+          options.groupsFilter ? options.groupsFilter.split(",") : [],
+          options.institutionsFilter
+            ? options.institutionsFilter.split(",")
+            : []
+        )
+      )
+      .catch((error) => {
+        console.error("Failed to load institutions data.", error);
+      });
+  }
+
+  function loadTransactions(options) {
+    console.debug("Loading transactions data.");
+    const fromDate = options.dateRangeFilter && options.dateRangeFilter[0];
+    const query = {
+      from:
+        fromDate && fromDate < TRANSACTIONS_FROM_DATE
+          ? fromDate
+          : TRANSACTIONS_FROM_DATE,
+      groups: options.groupsFilter,
+      institutions: options.institutionsFilter,
+      investments:
+        options.investmentsFilter === "all" ? null : options.investmentsFilter,
+    };
+    return this.state.addon
+      .request({
+        query,
+        method: "GET",
+        endpoint: "transactions",
+      })
+      .then((response) => response)
+      .catch((error) => {
+        console.error("Failed to load transactions data.", error);
+      });
+  }
 </script>
 
 <main>
-  <nav class="bg-blue-900 shadow-lg">
-    <div class="container mx-auto">
-      <div class="sm:flex">
-        <a href="#" class="text-white text-3xl font-bold p-3"> APP LOGO</a>
-
-        <!-- Menus  -->
-        <div class="ml-55 mt-4">
-          <ul class="text-white sm:self-center text-xl">
-            <li class="sm:inline-block">
-              <a href="#" class="p-3 hover:text-red-900">About</a>
-            </li>
-            <li class="sm:inline-block">
-              <a href="#" class="p-3 hover:text-red-900">Services</a>
-            </li>
-            <li class="sm:inline-block">
-              <a href="#" class="p-3 hover:text-red-900">Blog</a>
-            </li>
-            <li class="sm:inline-block">
-              <a href="#" class="p-3 hover:text-red-900">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <p>
+  <p class="text-2xl">
     Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
     how to build Svelte apps.
   </p>
@@ -37,6 +233,5 @@
 <style global lang="postcss">
   @tailwind base;
   @tailwind components;
-  /* purgecss end ignore */
   @tailwind utilities;
 </style>
