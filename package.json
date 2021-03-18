@@ -1,12 +1,14 @@
 {
-  "name": "svelte-app",
+  "name": "wealthica-pnl-widget",
+  "description": "Wealthica PnL Widget",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public",
-    "validate": "svelte-check"
+    "validate": "svelte-check",
+    "deploy": "npm run build && gh-pages -d public"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -29,5 +31,7 @@
     "postcss": "^7.0.35",
     "sirv-cli": "^1.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
-  }
+  },
+  "homepage": "https://mani-coder.github.io/wealthica-pnl-widget/",
+  "repository": "https://github.com/mani-coder/wealthica-pnl-widget"
 }
