@@ -11,7 +11,7 @@
 
   <div class="text-left font-medium">
     {#if privateMode}
-      -
+      $--
     {:else}
       {value >= 0 ? "" : "-"}${formatCurrency(Math.abs(value), 2)}
     {/if}
