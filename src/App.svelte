@@ -43,7 +43,7 @@
     });
   } catch (error) {
     console.warn("Falied to load the addon -- ", error);
-    setTimeout(() => loadStaticPortfolioData(), 2000);
+    setTimeout(() => loadStaticPortfolioData(), 100);
   }
 
   const debounced = (options) => {
@@ -232,7 +232,7 @@
 <Tailwindcss />
 
 <main>
-  <div class="max-w-xs h-80 w-full m-auto">
+  <div class="container m-auto">
     {#if loading}
       <div class="flex justify-center items-center w-full h-full">
         <Loading />
@@ -244,3 +244,10 @@
     {/if}
   </div>
 </main>
+
+<style>
+  .container {
+    width: 210px;
+    height: 240px;
+  }
+</style>
