@@ -1,12 +1,15 @@
 <script lang="ts">
   import { Addon } from "@wealthica/wealthica.js/index";
   import moment from "moment";
+  import "src/styles/tailwind.pcss";
   import {
     parseCurrencyReponse,
     parseInstitutionsResponse,
     parsePortfolioResponse,
     parseTransactionsResponse,
   } from "./api";
+  import Loading from "./components/Loading.svelte";
+  import PnLWidget from "./components/PnLWidget.svelte";
   import { TRANSACTIONS_FROM_DATE } from "./constants";
   import { CURRENCIES_API_RESPONSE } from "./mocks/currencies";
   import { INSTITUTIONS_DATA } from "./mocks/institutions";
@@ -16,7 +19,7 @@
 
   let currencyCache: { [K: string]: string };
   let addon: any;
-  let loading: boolean;
+  let loading: boolean = true;
   let portfolios: Portfolio[] = [];
   let privateMode: boolean;
   let timer;
@@ -224,25 +227,18 @@
         console.error("Failed to load transactions data.", error);
       });
   }
+
+  console.log("rendering app", { portfolios, loading });
 </script>
 
 <main>
-  <div class="p-2">
+  <div class="max-w-xs max-h-96 w-full h-full m-auto">
     {#if loading}
-      Loading....
+      <Loading />
+    {:else if portfolios}
+      <PnLWidget {portfolios} {privateMode} />
     {:else}
-      Loaded data, rendering portfolios.
-      <ul>
-        {#each portfolios as portfolio}
-          <li>{portfolio.date}: {portfolio.deposits}, {portfolio.value}</li>
-        {/each}
-      </ul>
+      <p>No Data</p>
     {/if}
   </div>
 </main>
-
-<style global lang="postcss">
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-</style>
