@@ -238,7 +238,7 @@
         <Loading />
       </div>
     {:else if portfolios}
-      <PnLWidget {portfolios} privateMode={true} />
+      <PnLWidget {portfolios} {privateMode} />
     {:else}
       <p>No Data</p>
     {/if}
