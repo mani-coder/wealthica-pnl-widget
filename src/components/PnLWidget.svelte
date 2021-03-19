@@ -176,118 +176,8 @@
     return data;
   }
 
-  // function getSeries(): Highcharts.SeriesBarOptions[] {
-  //   return [
-  //     {
-  //       name: "PnL Change %",
-  //       type: "bar",
-  //       data: getData().map((value) => ({
-  //         key: value.id,
-  //         name: value.id,
-  //         label: value.label,
-  //         y: value.changeRatio,
-
-  //         startDate: value.startDate,
-  //         endDate: value.endDate,
-  //         startPnl: !privateMode ? formatCurrency(value.startPnl, 2) : "-",
-  //         endPnl: !privateMode ? formatCurrency(value.endPnl, 2) : "-",
-  //         changeValue: !privateMode
-  //           ? `$${formatCurrency(value.changeValue, 1)}`
-  //           : "-",
-  //       })),
-  //       point: {
-  //         events: {
-  //           // mouseOver: (e: any) => {
-  //           //   trackEvent("mouse-over-point", {
-  //           //     chart: "pnl-change-over-periods",
-  //           //     name: e && e.target ? e.target.key : null,
-  //           //   });
-  //           // },
-  //         },
-  //       },
-  //       tooltip: {
-  //         headerFormat: "",
-  //         pointFormat: `<b style="font-size: 13px;">{point.label} ({point.key})</b><br /><b style="color: {point.color};font-size: 14px;">{point.y:.1f}% ({point.changeValue})</b><br /><hr />
-  //           P/L on {point.startDate}: <b>{point.startPnl}</b><br />
-  //           P/L on {point.endDate}: <b>{point.endPnl}</b><br />`,
-  //       },
-  //       dataLabels: {
-  //         enabled: true,
-  //         format: "{point.y:.1f}% ({point.changeValue})",
-  //       },
-  //       showInLegend: false,
-  //     },
-  //   ];
-  // }
-
-  // const getOptions = (): Highcharts.Options => {
-  //   return {
-  //     series: getSeries(),
-
-  //     tooltip: {
-  //       outside: true,
-
-  //       useHTML: true,
-  //       backgroundColor: "#FFF",
-  //       style: {
-  //         color: "#1F2A33",
-  //       },
-  //     },
-
-  //     title: {
-  //       text: undefined,
-  //     },
-  //     // subtitle: {
-  //     //   text:
-  //     //     "This chart shows how your portfolio had performed in multiple time slices. This chart is inspired based on YoY growth. You might want to see the change in your P/L in the last few days, weeks, months, years etc.,",
-  //     //   style: {
-  //     //     color: "#1F2A33",
-  //     //   },
-  //     // },
-  //     xAxis: {
-  //       type: "category",
-  //       labels: {
-  //         // rotation: -45,
-  //         style: {
-  //           fontSize: "13px",
-  //           fontFamily: "Verdana, sans-serif",
-  //         },
-  //       },
-  //     },
-
-  //     yAxis: {
-  //       labels: {
-  //         enabled: !privateMode,
-  //       },
-  //       title: {
-  //         text: "P/L Change (%)",
-  //       },
-  //     },
-
-  //     plotOptions: {
-  //       bar: {
-  //         zones: [
-  //           {
-  //             value: -0.00000001,
-  //             color: "#FF897C",
-  //           },
-  //           {
-  //             color: "#84C341",
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   };
-  // };
-  // let canvas;
-  // afterUpdate(() => {
-  //   setTimeout(() => {
-  //     Highcharts.chart(canvas, getOptions());
-  //   }, 50);
-  // });
-
   const data = getData();
-  $: pnl = data[pnlIndexToShow];
+  $: pnl = pnlIndexToShow < data.length ? data[pnlIndexToShow] : data[0];
 
   function handlePnlClick(pnlIndex: number) {
     pnlIndexToShow = pnlIndex;
@@ -310,9 +200,13 @@
       <div class={pnl.color}>
         <div class="text-base font-medium">{pnl.changeRatio.toFixed(2)}%</div>
         <div class="text-sm">
-          {pnl.changeValue >= 0 ? "" : "-"}${Math.abs(pnl.changeValue).toFixed(
-            2
-          )}
+          {#if privateMode}
+            $--
+          {:else}
+            {pnl.changeValue >= 0 ? "" : "-"}${Math.abs(
+              pnl.changeValue
+            ).toFixed(2)}
+          {/if}
         </div>
       </div>
     </div>
@@ -331,8 +225,4 @@
       selectedIndex={pnlIndexToShow}
     />
   </div>
-
-  <!-- <div bind:this={canvas}>
-    <slot />
-  </div> -->
 </div>
