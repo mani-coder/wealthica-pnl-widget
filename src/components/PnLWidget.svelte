@@ -2,10 +2,12 @@
   import moment, { Moment } from "moment";
   import type { Portfolio } from "../types";
   import { formatCurrency, getPreviousWeekday } from "../utils";
+  // import Highcharts from "highcharts";
+  // import { afterUpdate } from "svelte";
   // import Carousel from "@beyonk/svelte-carousel";
 
   export let portfolios: Portfolio[] = [];
-  export let privateMode: boolean;
+  // export let privateMode: boolean;
 
   const portfolioReverse = portfolios.slice().reverse();
   const DATE_DISPLAY_FORMAT = "MMM DD, YYYY";
@@ -169,54 +171,56 @@
 
     console.debug("PnL change data -- ", data);
 
-    // const series: Highcharts.SeriesBarOptions[] = [
-    //   {
-    //     name: "PnL Change %",
-    //     type: "bar",
-    //     data: data.map((value) => ({
-    //       key: value.id,
-    //       name: value.id,
-    //       label: value.label,
-    //       y: value.changeRatio,
-
-    //       startDate: value.startDate,
-    //       endDate: value.endDate,
-    //       startPnl: !privateMode ? formatCurrency(value.startPnl, 2) : "-",
-    //       endPnl: !privateMode ? formatCurrency(value.endPnl, 2) : "-",
-    //       changeValue: !privateMode
-    //         ? `$${formatCurrency(value.changeValue, 1)}`
-    //         : "-",
-    //     })),
-    //     point: {
-    //       events: {
-    //         // mouseOver: (e: any) => {
-    //         //   trackEvent("mouse-over-point", {
-    //         //     chart: "pnl-change-over-periods",
-    //         //     name: e && e.target ? e.target.key : null,
-    //         //   });
-    //         // },
-    //       },
-    //     },
-    //     tooltip: {
-    //       headerFormat: "",
-    //       pointFormat: `<b style="font-size: 13px;">{point.label} ({point.key})</b><br /><b style="color: {point.color};font-size: 14px;">{point.y:.1f}% ({point.changeValue})</b><br /><hr />
-    //         P/L on {point.startDate}: <b>{point.startPnl}</b><br />
-    //         P/L on {point.endDate}: <b>{point.endPnl}</b><br />`,
-    //     },
-    //     dataLabels: {
-    //       enabled: true,
-    //       format: "{point.y:.1f}% ({point.changeValue})",
-    //     },
-    //     showInLegend: false,
-    //   },
-    // ];
-
     return data;
   }
 
+  // function getSeries(): Highcharts.SeriesBarOptions[] {
+  //   return [
+  //     {
+  //       name: "PnL Change %",
+  //       type: "bar",
+  //       data: getData().map((value) => ({
+  //         key: value.id,
+  //         name: value.id,
+  //         label: value.label,
+  //         y: value.changeRatio,
+
+  //         startDate: value.startDate,
+  //         endDate: value.endDate,
+  //         startPnl: !privateMode ? formatCurrency(value.startPnl, 2) : "-",
+  //         endPnl: !privateMode ? formatCurrency(value.endPnl, 2) : "-",
+  //         changeValue: !privateMode
+  //           ? `$${formatCurrency(value.changeValue, 1)}`
+  //           : "-",
+  //       })),
+  //       point: {
+  //         events: {
+  //           // mouseOver: (e: any) => {
+  //           //   trackEvent("mouse-over-point", {
+  //           //     chart: "pnl-change-over-periods",
+  //           //     name: e && e.target ? e.target.key : null,
+  //           //   });
+  //           // },
+  //         },
+  //       },
+  //       tooltip: {
+  //         headerFormat: "",
+  //         pointFormat: `<b style="font-size: 13px;">{point.label} ({point.key})</b><br /><b style="color: {point.color};font-size: 14px;">{point.y:.1f}% ({point.changeValue})</b><br /><hr />
+  //           P/L on {point.startDate}: <b>{point.startPnl}</b><br />
+  //           P/L on {point.endDate}: <b>{point.endPnl}</b><br />`,
+  //       },
+  //       dataLabels: {
+  //         enabled: true,
+  //         format: "{point.y:.1f}% ({point.changeValue})",
+  //       },
+  //       showInLegend: false,
+  //     },
+  //   ];
+  // }
+
   // const getOptions = (): Highcharts.Options => {
   //   return {
-  //     series: getData(),
+  //     series: getSeries(),
 
   //     tooltip: {
   //       outside: true,
@@ -274,7 +278,12 @@
   //   };
   // };
 
-  let data = getData();
+  // let canvas;
+  // afterUpdate(() => {
+  //   setTimeout(() => {
+  //     Highcharts.chart(canvas, getOptions());
+  //   }, 50);
+  // });
 </script>
 
 <div class="w-full h-full overflow-scroll">
@@ -284,5 +293,8 @@
       P/L Change Over Multiple Time Periods
     </h5>
   </div>
-  <div class="w-full h-full">Mani</div>
+
+  <!-- <div bind:this={canvas}>
+    <slot />
+  </div> -->
 </div>
