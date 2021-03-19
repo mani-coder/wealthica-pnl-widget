@@ -1,7 +1,8 @@
 <script lang="ts">
   import moment, { Moment } from "moment";
   import type { Portfolio } from "../types";
-  import { formatCurrency, formatMoney, getPreviousWeekday } from "../utils";
+  import { formatMoney, getPreviousWeekday } from "../utils";
+  import DateRanges from "./DateRanges.svelte";
   import DateValue from "./DateValue.svelte";
   import ArrowDown from "./icons/ArrowDown.svelte";
   import ArrowUp from "./icons/ArrowUp.svelte";
@@ -288,32 +289,29 @@
   const data = getData();
   $: pnl = data[pnlIndexToShow];
 
-  function handlePnlClick(pnlIndex) {
+  function handlePnlClick(pnlIndex: number) {
     pnlIndexToShow = pnlIndex;
   }
 </script>
 
 <div class="w-full h-full overflow-scroll">
-  <h5 class="flex items-center">
-    <img src="favicon.png" alt="P/L" width={30} height={30} />
-    <div class="px-2 text-center">PnL Change</div>
+  <!-- <img src="favicon.png" alt="P/L" width={20} height={20} /> -->
+
+  <h5 class="my-2 text-base font-bold text-center text-gray-500">
+    {pnl.label} PnL Change
   </h5>
 
-  <div class="flex flex-col space-y-2 w-full p-2 bg-gray-50 rounded-lg">
-    <h5 class="my-1 pt-1 px-1 font-semibold text-center text-gray-600">
-      {pnl.label} Change
-    </h5>
-
+  <div class="flex flex-col space-y-1 w-full p-2 bg-gray-100 rounded-lg">
     <div class="flex items-center space-x-3">
       <div class="mx-2">
         {#if pnl.changeRatio >= 0}<ArrowUp />{:else}<ArrowDown />{/if}
       </div>
 
       <div class={pnl.color}>
-        <div class="text-lg font-medium">{pnl.changeRatio.toFixed(2)}%</div>
-        <div class="text-md">
-          {pnl.changeValue >= 0 ? "" : "-"}${formatMoney(
-            Math.abs(pnl.changeValue)
+        <div class="text-base font-medium">{pnl.changeRatio.toFixed(2)}%</div>
+        <div class="text-sm">
+          {pnl.changeValue >= 0 ? "" : "-"}${Math.abs(pnl.changeValue).toFixed(
+            2
           )}
         </div>
       </div>
@@ -321,12 +319,18 @@
 
     <div class="border-gray-300 border-t px-1" />
     <div class="flex-col text-sm px-1 space-y-1">
-      <DateValue date={pnl.startDate} value={pnl.startPnl} />
-      <DateValue date={pnl.endDate} value={pnl.endPnl} />
+      <DateValue date={pnl.startDate} value={pnl.startPnl} {privateMode} />
+      <DateValue date={pnl.endDate} value={pnl.endPnl} {privateMode} />
     </div>
   </div>
 
-  {#each data as pnl, index}{/each}
+  <div class="w-full my-2 px-1">
+    <DateRanges
+      labels={data.map((value) => value.id)}
+      onClick={handlePnlClick}
+      selectedIndex={pnlIndexToShow}
+    />
+  </div>
 
   <!-- <div bind:this={canvas}>
     <slot />
