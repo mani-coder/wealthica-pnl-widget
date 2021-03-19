@@ -8,7 +8,6 @@
   export let privateMode: boolean;
 
   const portfolioReverse = portfolios.slice().reverse();
-
   const DATE_DISPLAY_FORMAT = "MMM DD, YYYY";
 
   function getNearestPortfolioDate(date: string): Portfolio | undefined {
@@ -275,12 +274,11 @@
   //   };
   // };
 
-  const data = getData();
-  console.log("mani is cool", { privateMode, portfolios });
+  let data = getData();
 </script>
 
 <div class="w-full h-full overflow-scroll">
-  <div class="flex items-center justify-center">
+  <div class="flex items-start justify-center">
     <img src="favicon.png" alt="P/L" width={30} height={30} />
     <h5 class="font-bold px-1 text-center">
       P/L Change Over Multiple Time Periods

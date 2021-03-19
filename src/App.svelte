@@ -43,7 +43,7 @@
     });
   } catch (error) {
     console.warn("Falied to load the addon -- ", error);
-    loadStaticPortfolioData();
+    setTimeout(() => loadStaticPortfolioData(), 2000);
   }
 
   const debounced = (options) => {
