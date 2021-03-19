@@ -27,18 +27,18 @@
   try {
     addon = new Addon({});
     addon.on("init", (options) => {
-      console.debug("Addon initialization", options);
+      console.debug("[pnl-widget] Addon initialization", options);
       debounced(options);
     });
 
     addon.on("reload", () => {
       // Start reloading
-      console.debug("Reload invoked!");
+      console.debug("[pnl-widget] Reload invoked!");
     });
 
     addon.on("update", (options) => {
       // Update according to the received options
-      console.debug("Addon update - options: ", options);
+      console.debug("[pnl-widget] Addon update - options: ", options);
       debounced(options);
     });
   } catch (error) {
@@ -66,7 +66,7 @@
       loadTransactions(options),
     ]);
     currencyCache = currencyData ? currencyData : currencyCache;
-    computePortfolios(portfolioData, transactions, accounts, currencyData);
+    computePortfolios(portfolioData, transactions, accounts, currencyCache);
     loading = false;
     console.debug("Done with loading data", { portfolios });
   }
@@ -79,7 +79,7 @@
       parseCurrencyReponse(CURRENCIES_API_RESPONSE)
     );
     loading = false;
-    console.debug("Static Dev State:", { portfolios });
+    console.debug("[pnl-widget] Static Dev State:", { portfolios });
   }
 
   function computePortfolios(
@@ -137,7 +137,7 @@
       return null;
     }
 
-    console.debug("Loading currencies data.");
+    console.debug("[pnl-widget] Loading currencies data.");
     return addon
       .request({
         method: "GET",
@@ -148,12 +148,12 @@
       })
       .then((response) => parseCurrencyReponse(response))
       .catch((error) => {
-        console.error("Failed to load currency data.", error);
+        console.error("[pnl-widget] Failed to load currency data.", error);
       });
   }
 
   function loadPortfolioData(options) {
-    console.debug("Loading portfolio data.");
+    console.debug("[pnl-widget] Loading portfolio data.");
     const query = {
       from: options.dateRangeFilter && options.dateRangeFilter[0],
       to: options.dateRangeFilter && options.dateRangeFilter[1],
@@ -170,12 +170,12 @@
       })
       .then((response) => parsePortfolioResponse(response))
       .catch((error) => {
-        console.error("Failed to load portfolio data.", error);
+        console.error("[pnl-widget] Failed to load portfolio data.", error);
       });
   }
 
   function loadInstitutionsData(options) {
-    console.debug("Loading institutions data..");
+    console.debug("[pnl-widget] Loading institutions data..");
     const query = {
       assets: true,
       groups: options.groupsFilter,
@@ -199,12 +199,12 @@
         )
       )
       .catch((error) => {
-        console.error("Failed to load institutions data.", error);
+        console.error("[pnl-widget] Failed to load institutions data.", error);
       });
   }
 
   function loadTransactions(options) {
-    console.debug("Loading transactions data.");
+    console.debug("[pnl-widget] Loading transactions data.");
     const fromDate = options.dateRangeFilter && options.dateRangeFilter[0];
     const query = {
       from:
@@ -224,11 +224,9 @@
       })
       .then((response) => response)
       .catch((error) => {
-        console.error("Failed to load transactions data.", error);
+        console.error("[pnl-widget] Failed to load transactions data.", error);
       });
   }
-
-  console.log("rendering app", { portfolios, loading });
 </script>
 
 <Tailwindcss />
