@@ -1,9 +1,8 @@
 <script lang="ts">
-  import Highcharts from "highcharts";
   import moment, { Moment } from "moment";
-  import { afterUpdate } from "svelte";
   import type { Portfolio } from "../types";
   import { formatCurrency, getPreviousWeekday } from "../utils";
+  // import Carousel from "@beyonk/svelte-carousel";
 
   export let portfolios: Portfolio[] = [];
   export let privateMode: boolean;
@@ -171,117 +170,113 @@
 
     console.debug("PnL change data -- ", data);
 
-    const series: Highcharts.SeriesBarOptions[] = [
-      {
-        name: "PnL Change %",
-        type: "bar",
-        data: data.map((value) => ({
-          key: value.id,
-          name: value.id,
-          label: value.label,
-          y: value.changeRatio,
+    // const series: Highcharts.SeriesBarOptions[] = [
+    //   {
+    //     name: "PnL Change %",
+    //     type: "bar",
+    //     data: data.map((value) => ({
+    //       key: value.id,
+    //       name: value.id,
+    //       label: value.label,
+    //       y: value.changeRatio,
 
-          startDate: value.startDate,
-          endDate: value.endDate,
-          startPnl: !privateMode ? formatCurrency(value.startPnl, 2) : "-",
-          endPnl: !privateMode ? formatCurrency(value.endPnl, 2) : "-",
-          changeValue: !privateMode
-            ? `$${formatCurrency(value.changeValue, 1)}`
-            : "-",
-        })),
-        point: {
-          events: {
-            // mouseOver: (e: any) => {
-            //   trackEvent("mouse-over-point", {
-            //     chart: "pnl-change-over-periods",
-            //     name: e && e.target ? e.target.key : null,
-            //   });
-            // },
-          },
-        },
-        tooltip: {
-          headerFormat: "",
-          pointFormat: `<b style="font-size: 13px;">{point.label} ({point.key})</b><br /><b style="color: {point.color};font-size: 14px;">{point.y:.1f}% ({point.changeValue})</b><br /><hr />
-            P/L on {point.startDate}: <b>{point.startPnl}</b><br />
-            P/L on {point.endDate}: <b>{point.endPnl}</b><br />`,
-        },
-        dataLabels: {
-          enabled: true,
-          format: "{point.y:.1f}% ({point.changeValue})",
-        },
-        showInLegend: false,
-      },
-    ];
+    //       startDate: value.startDate,
+    //       endDate: value.endDate,
+    //       startPnl: !privateMode ? formatCurrency(value.startPnl, 2) : "-",
+    //       endPnl: !privateMode ? formatCurrency(value.endPnl, 2) : "-",
+    //       changeValue: !privateMode
+    //         ? `$${formatCurrency(value.changeValue, 1)}`
+    //         : "-",
+    //     })),
+    //     point: {
+    //       events: {
+    //         // mouseOver: (e: any) => {
+    //         //   trackEvent("mouse-over-point", {
+    //         //     chart: "pnl-change-over-periods",
+    //         //     name: e && e.target ? e.target.key : null,
+    //         //   });
+    //         // },
+    //       },
+    //     },
+    //     tooltip: {
+    //       headerFormat: "",
+    //       pointFormat: `<b style="font-size: 13px;">{point.label} ({point.key})</b><br /><b style="color: {point.color};font-size: 14px;">{point.y:.1f}% ({point.changeValue})</b><br /><hr />
+    //         P/L on {point.startDate}: <b>{point.startPnl}</b><br />
+    //         P/L on {point.endDate}: <b>{point.endPnl}</b><br />`,
+    //     },
+    //     dataLabels: {
+    //       enabled: true,
+    //       format: "{point.y:.1f}% ({point.changeValue})",
+    //     },
+    //     showInLegend: false,
+    //   },
+    // ];
 
-    return series;
+    return data;
   }
 
-  const getOptions = (): Highcharts.Options => {
-    return {
-      series: getData(),
+  // const getOptions = (): Highcharts.Options => {
+  //   return {
+  //     series: getData(),
 
-      tooltip: {
-        outside: true,
+  //     tooltip: {
+  //       outside: true,
 
-        useHTML: true,
-        backgroundColor: "#FFF",
-        style: {
-          color: "#1F2A33",
-        },
-      },
+  //       useHTML: true,
+  //       backgroundColor: "#FFF",
+  //       style: {
+  //         color: "#1F2A33",
+  //       },
+  //     },
 
-      title: {
-        text: undefined,
-      },
-      // subtitle: {
-      //   text:
-      //     "This chart shows how your portfolio had performed in multiple time slices. This chart is inspired based on YoY growth. You might want to see the change in your P/L in the last few days, weeks, months, years etc.,",
-      //   style: {
-      //     color: "#1F2A33",
-      //   },
-      // },
-      xAxis: {
-        type: "category",
-        labels: {
-          // rotation: -45,
-          style: {
-            fontSize: "13px",
-            fontFamily: "Verdana, sans-serif",
-          },
-        },
-      },
+  //     title: {
+  //       text: undefined,
+  //     },
+  //     // subtitle: {
+  //     //   text:
+  //     //     "This chart shows how your portfolio had performed in multiple time slices. This chart is inspired based on YoY growth. You might want to see the change in your P/L in the last few days, weeks, months, years etc.,",
+  //     //   style: {
+  //     //     color: "#1F2A33",
+  //     //   },
+  //     // },
+  //     xAxis: {
+  //       type: "category",
+  //       labels: {
+  //         // rotation: -45,
+  //         style: {
+  //           fontSize: "13px",
+  //           fontFamily: "Verdana, sans-serif",
+  //         },
+  //       },
+  //     },
 
-      yAxis: {
-        labels: {
-          enabled: !privateMode,
-        },
-        title: {
-          text: "P/L Change (%)",
-        },
-      },
+  //     yAxis: {
+  //       labels: {
+  //         enabled: !privateMode,
+  //       },
+  //       title: {
+  //         text: "P/L Change (%)",
+  //       },
+  //     },
 
-      plotOptions: {
-        bar: {
-          zones: [
-            {
-              value: -0.00000001,
-              color: "#FF897C",
-            },
-            {
-              color: "#84C341",
-            },
-          ],
-        },
-      },
-    };
-  };
+  //     plotOptions: {
+  //       bar: {
+  //         zones: [
+  //           {
+  //             value: -0.00000001,
+  //             color: "#FF897C",
+  //           },
+  //           {
+  //             color: "#84C341",
+  //           },
+  //         ],
+  //       },
+  //     },
+  //   };
+  // };
 
-  let chart;
-  afterUpdate(() => {
-    setTimeout(() => {
-      Highcharts.chart(chart, getOptions());
-    }, 50);
-  });
+  const data = getData();
+  console.log("mani is cool", { privateMode, portfolios });
 </script>
 
 <div class="w-full h-full overflow-scroll">
@@ -291,7 +286,5 @@
       P/L Change Over Multiple Time Periods
     </h5>
   </div>
-  <div bind:this={chart}>
-    <slot />
-  </div>
+  <div class="w-full h-full">Mani</div>
 </div>

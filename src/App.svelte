@@ -232,9 +232,11 @@
 </script>
 
 <main>
-  <div class="max-w-xs max-h-96 w-full h-full m-auto">
+  <div class="max-w-xs h-80 w-full m-auto">
     {#if loading}
-      <Loading />
+      <div class="flex justify-center items-center w-full h-full">
+        <Loading />
+      </div>
     {:else if portfolios}
       <PnLWidget {portfolios} {privateMode} />
     {:else}
