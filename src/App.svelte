@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Addon } from "@wealthica/wealthica.js/index";
   import moment from "moment";
-  import "src/styles/tailwind.pcss";
+  import Tailwindcss from "./Tailwindcss.svelte";
   import {
     parseCurrencyReponse,
     parseInstitutionsResponse,
@@ -230,6 +230,8 @@
 
   console.log("rendering app", { portfolios, loading });
 </script>
+
+<Tailwindcss />
 
 <main>
   <div class="max-w-xs h-80 w-full m-auto">
