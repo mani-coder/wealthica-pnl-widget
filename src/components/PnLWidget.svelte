@@ -1,13 +1,14 @@
 <script lang="ts">
   import moment, { Moment } from "moment";
   import type { Portfolio } from "../types";
-  import { formatCurrency, getPreviousWeekday } from "../utils";
-  // import Highcharts from "highcharts";
-  // import { afterUpdate } from "svelte";
-  // import Carousel from "@beyonk/svelte-carousel";
+  import { formatCurrency, formatMoney, getPreviousWeekday } from "../utils";
+  import DateValue from "./DateValue.svelte";
+  import ArrowDown from "./icons/ArrowDown.svelte";
+  import ArrowUp from "./icons/ArrowUp.svelte";
 
   export let portfolios: Portfolio[] = [];
-  // export let privateMode: boolean;
+  export let privateMode: boolean;
+  let pnlIndexToShow = 0;
 
   const portfolioReverse = portfolios.slice().reverse();
   const DATE_DISPLAY_FORMAT = "MMM DD, YYYY";
@@ -165,7 +166,7 @@
           endPnl,
           changeRatio,
           changeValue,
-          color: changeRatio >= 0 ? "green" : "red",
+          color: changeRatio >= 0 ? "text-green-500" : "text-red-500",
         };
       });
 
@@ -277,22 +278,55 @@
   //     },
   //   };
   // };
-
   // let canvas;
   // afterUpdate(() => {
   //   setTimeout(() => {
   //     Highcharts.chart(canvas, getOptions());
   //   }, 50);
   // });
+
+  const data = getData();
+  $: pnl = data[pnlIndexToShow];
+
+  function handlePnlClick(pnlIndex) {
+    pnlIndexToShow = pnlIndex;
+  }
 </script>
 
 <div class="w-full h-full overflow-scroll">
-  <div class="flex items-start justify-center">
+  <h5 class="flex items-center">
     <img src="favicon.png" alt="P/L" width={30} height={30} />
-    <h5 class="font-bold px-1 text-center">
-      P/L Change Over Multiple Time Periods
+    <div class="px-2 text-center">PnL Change</div>
+  </h5>
+
+  <div class="flex flex-col space-y-2 w-full p-2 bg-gray-50 rounded-lg">
+    <h5 class="my-1 pt-1 px-1 font-semibold text-center text-gray-600">
+      {pnl.label} Change
     </h5>
+
+    <div class="flex items-center space-x-3">
+      <div class="mx-2">
+        {#if pnl.changeRatio >= 0}<ArrowUp />{:else}<ArrowDown />{/if}
+      </div>
+
+      <div class={pnl.color}>
+        <div class="text-lg font-medium">{pnl.changeRatio.toFixed(2)}%</div>
+        <div class="text-md">
+          {pnl.changeValue >= 0 ? "" : "-"}${formatMoney(
+            Math.abs(pnl.changeValue)
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div class="border-gray-300 border-t px-1" />
+    <div class="flex-col text-sm px-1 space-y-1">
+      <DateValue date={pnl.startDate} value={pnl.startPnl} />
+      <DateValue date={pnl.endDate} value={pnl.endPnl} />
+    </div>
   </div>
+
+  {#each data as pnl, index}{/each}
 
   <!-- <div bind:this={canvas}>
     <slot />
