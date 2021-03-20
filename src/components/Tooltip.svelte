@@ -30,7 +30,8 @@
     visibility: hidden;
     min-width: 70px;
     max-width: 250px;
-    background-color: black;
+    background-color: #000;
+    background-color: hsla(0, 0%, 20%, 0.9);
     color: #fff;
     border-radius: 6px;
 
