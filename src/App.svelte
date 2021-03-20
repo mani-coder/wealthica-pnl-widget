@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Addon } from "@wealthica/wealthica.js/index";
   import moment from "moment";
-  import Tailwindcss from "./Tailwindcss.svelte";
   import {
     parseCurrencyReponse,
     parseInstitutionsResponse,
@@ -15,6 +14,7 @@
   import { INSTITUTIONS_DATA } from "./mocks/institutions";
   import { PORTFOLIO_API_RESPONSE } from "./mocks/portfolio";
   import { TRANSACTIONS_API_RESPONSE } from "./mocks/transactions";
+  import Tailwindcss from "./styles/Tailwindcss.svelte";
   import type { Portfolio } from "./types";
 
   let currencyCache: { [K: string]: string };
@@ -229,7 +229,9 @@
   }
 </script>
 
-<Tailwindcss />
+<svelte:head>
+  <Tailwindcss />
+</svelte:head>
 
 <main>
   <div class="container m-auto">

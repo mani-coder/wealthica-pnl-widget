@@ -5,7 +5,9 @@
   import DateValue from "./DateValue.svelte";
   import ArrowDown from "./icons/ArrowDown.svelte";
   import ArrowUp from "./icons/ArrowUp.svelte";
+  import QuestionCircle from "./icons/QuestionCircle.svelte";
   import PnLRanges from "./PnLRanges.svelte";
+  import Tooltip from "./Tooltip.svelte";
 
   export let portfolios: Portfolio[] = [];
   export let privateMode: boolean;
@@ -191,20 +193,36 @@
   </h5>
 
   <div class="flex flex-col space-y-1 w-full p-2 bg-gray-100 rounded-lg">
-    <div class="flex items-center justify-center space-x-3">
+    <div class="flex items-center px-2 space-x-3">
       <div class="mr-3">
         {#if pnl.changeRatio >= 0}<ArrowUp />{:else}<ArrowDown />{/if}
       </div>
 
-      <div class={pnl.changeRatio >= 0 ? "text-green-500" : "text-red-500"}>
-        <div class="text-base font-medium">{pnl.changeRatio.toFixed(2)}%</div>
+      <div
+        class={`flex-grow flex-col ${
+          pnl.changeRatio >= 0 ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        <div class="text-base font-medium">
+          <Tooltip
+            tooltip="This the percentage change in your PnL ratio for the selected date range."
+          >
+            <div>{pnl.changeRatio.toFixed(2)}%</div>
+          </Tooltip>
+        </div>
         <div class="text-sm">
           {#if privateMode}
             $--
           {:else}
-            {pnl.changeValue >= 0 ? "" : "-"}${Math.abs(
-              pnl.changeValue
-            ).toFixed(2)}
+            <Tooltip
+              tooltip="This the difference between your PnL's for the selected date range."
+            >
+              <span>
+                {pnl.changeValue >= 0 ? "" : "-"}${Math.abs(
+                  Number(pnl.changeValue.toFixed(2))
+                ).toLocaleString()}
+              </span>
+            </Tooltip>
           {/if}
         </div>
       </div>
@@ -220,4 +238,6 @@
   <div class="w-full my-2 px-1">
     <PnLRanges {data} onClick={handlePnlClick} {selectedPnLIndex} />
   </div>
+
+  <div class="border-gray-400 border-t px-1" />
 </div>
