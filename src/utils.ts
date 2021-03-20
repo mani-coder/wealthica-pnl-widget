@@ -25,13 +25,6 @@ export const getCurrencyInCAD = (
   return multiplier ? value / multiplier : value;
 };
 
-export const formatMoney = (amount?: number): string => {
-  if (!amount) {
-    return "N/A";
-  }
-  return amount.toLocaleString();
-};
-
 export const getSymbol = (security: Security): string => {
   return `${security.symbol || security.name}${
     security.currency === "usd" ? "" : ".TO"
