@@ -1,15 +1,15 @@
 <script lang="ts">
   import moment, { Moment } from "moment";
   import type { Portfolio } from "../types";
-  import { formatMoney, getPreviousWeekday } from "../utils";
-  import DateRanges from "./DateRanges.svelte";
+  import { getPreviousWeekday } from "../utils";
   import DateValue from "./DateValue.svelte";
   import ArrowDown from "./icons/ArrowDown.svelte";
   import ArrowUp from "./icons/ArrowUp.svelte";
+  import PnLRanges from "./PnLRanges.svelte";
 
   export let portfolios: Portfolio[] = [];
   export let privateMode: boolean;
-  let pnlIndexToShow = 0;
+  let selectedPnLIndex = 0;
 
   const portfolioReverse = portfolios.slice().reverse();
   const DATE_DISPLAY_FORMAT = "MMM DD, YYYY";
@@ -167,7 +167,6 @@
           endPnl,
           changeRatio,
           changeValue,
-          color: changeRatio >= 0 ? "text-green-500" : "text-red-500",
         };
       });
 
@@ -177,10 +176,10 @@
   }
 
   const data = getData();
-  $: pnl = pnlIndexToShow < data.length ? data[pnlIndexToShow] : data[0];
+  $: pnl = selectedPnLIndex < data.length ? data[selectedPnLIndex] : data[0];
 
   function handlePnlClick(pnlIndex: number) {
-    pnlIndexToShow = pnlIndex;
+    selectedPnLIndex = pnlIndex;
   }
 </script>
 
@@ -192,12 +191,12 @@
   </h5>
 
   <div class="flex flex-col space-y-1 w-full p-2 bg-gray-100 rounded-lg">
-    <div class="flex items-center space-x-3">
-      <div class="mx-2">
+    <div class="flex items-center justify-center space-x-3">
+      <div class="mr-3">
         {#if pnl.changeRatio >= 0}<ArrowUp />{:else}<ArrowDown />{/if}
       </div>
 
-      <div class={pnl.color}>
+      <div class={pnl.changeRatio >= 0 ? "text-green-500" : "text-red-500"}>
         <div class="text-base font-medium">{pnl.changeRatio.toFixed(2)}%</div>
         <div class="text-sm">
           {#if privateMode}
@@ -219,10 +218,6 @@
   </div>
 
   <div class="w-full my-2 px-1">
-    <DateRanges
-      labels={data.map((value) => value.id)}
-      onClick={handlePnlClick}
-      selectedIndex={pnlIndexToShow}
-    />
+    <PnLRanges {data} onClick={handlePnlClick} {selectedPnLIndex} />
   </div>
 </div>
