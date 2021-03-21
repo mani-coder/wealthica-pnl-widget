@@ -5,7 +5,6 @@
   import DateValue from "./DateValue.svelte";
   import ArrowDown from "./icons/ArrowDown.svelte";
   import ArrowUp from "./icons/ArrowUp.svelte";
-  import QuestionCircle from "./icons/QuestionCircle.svelte";
   import PnLRanges from "./PnLRanges.svelte";
   import Tooltip from "./Tooltip.svelte";
 
@@ -238,6 +237,4 @@
   <div class="w-full my-2 px-1">
     <PnLRanges {data} onClick={handlePnlClick} {selectedPnLIndex} />
   </div>
-
-  <div class="border-gray-400 border-t px-1" />
 </div>
