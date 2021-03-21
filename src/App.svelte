@@ -236,10 +236,7 @@
 
 <main>
   <div class={!addon ? "flex border w-max my-4 mx-auto p-2 rounded-lg" : ""}>
-    <div
-      class="container"
-      style={`--width:${process.env.production ? "100%" : "219px"};`}
-    >
+    <div class="container" style={`--width:${addon ? "100%" : "219px"};`}>
       {#if loading}
         <div class="flex justify-center py-2 w-full h-full">
           <Loading />
