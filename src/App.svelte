@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Addon } from "@wealthica/wealthica.js/index";
   import moment from "moment";
+  import { onMount } from "svelte";
   import {
     parseCurrencyReponse,
     parseInstitutionsResponse,
@@ -234,22 +235,27 @@
 </svelte:head>
 
 <main>
-  <div class="container m-auto">
-    {#if loading}
-      <div class="flex justify-center py-2 w-full h-full">
-        <Loading />
-      </div>
-    {:else if portfolios}
-      <PnLWidget {portfolios} {privateMode} />
-    {:else}
-      <p>No Data</p>
-    {/if}
+  <div class={!addon ? "flex border w-max my-4 mx-auto p-2 rounded-lg" : ""}>
+    <div
+      class="container"
+      style={`--width:${process.env.production ? "100%" : "219px"};`}
+    >
+      {#if loading}
+        <div class="flex justify-center py-2 w-full h-full">
+          <Loading />
+        </div>
+      {:else if portfolios}
+        <PnLWidget {portfolios} {privateMode} />
+      {:else}
+        <p>No Data</p>
+      {/if}
+    </div>
   </div>
 </main>
 
 <style>
   .container {
-    width: 210px;
+    width: var(--width);
     height: 240px;
   }
 </style>

@@ -7,17 +7,17 @@
   export let privateMode: boolean;
 </script>
 
-<div class="flex w-full text-xs justify-between text-gray-600">
-  <div class="font-light">{date}</div>
+<div class="flex w-full text-xs text-gray-600">
+  <div class="w-5/12 font-light">{date}</div>
 
-  <div class="text-left">
-    <span>{ratio.toFixed(2)}%</span>{" "}
-    {#if privateMode}
-      $--
-    {:else}
-      <span class="font-light">
-        ({value >= 0 ? "" : "-"}${formatCurrency(Math.abs(value), 2)})
-      </span>
-    {/if}
+  <div class="flex w-7/12 justify-between pl-1">
+    <div class="font-medium">{ratio.toFixed(2)}%</div>
+    <div class="font-normal">
+      {#if privateMode}
+        $--
+      {:else}
+        {value >= 0 ? "" : "-"}${formatCurrency(Math.abs(value), 2)}
+      {/if}
+    </div>
   </div>
 </div>
