@@ -1,7 +1,7 @@
 
 ## Wealthica PnL Change Widget For Multiple Time Periods
 
-Wealthica widget for checking the PnL changes for multiple time periods. PnL is computed using the portfolio value against the deposits/withdrawals. This widget is an inspiration from one of the PnL chart in the P/L Timeline addon. 
+Wealthica widget for checking the PnL changes for well known time periods like 1D, WTD (Week To Date), MTD (Month To Date) etc.,. PnL is computed using the portfolio value against the deposits/withdrawals. This widget is an inspiration from one of the PnL chart in the [P/L Timeline addon](https://github.com/mani-coder/wealthica-portfolio-addon). 
 
 Steps to load the addon:
 
