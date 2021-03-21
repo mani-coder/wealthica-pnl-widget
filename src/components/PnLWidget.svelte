@@ -149,12 +149,11 @@
         const startPnl =
           value.startPortfolio.value - value.startPortfolio.deposits;
         const endPnl = value.endPortfolio.value - value.endPortfolio.deposits;
+        const startRatio = (startPnl / value.startPortfolio.deposits) * 100;
+        const endRatio = (endPnl / value.endPortfolio.deposits) * 100;
 
         const changeValue = endPnl - startPnl;
-        const changeRatio =
-          (endPnl / value.endPortfolio.deposits -
-            startPnl / value.startPortfolio.deposits) *
-          100;
+        const changeRatio = endRatio - startRatio;
 
         return {
           id: value.id,
@@ -165,7 +164,9 @@
           ),
           endDate: moment(value.endPortfolio.date).format(DATE_DISPLAY_FORMAT),
           startPnl,
+          startRatio,
           endPnl,
+          endRatio,
           changeRatio,
           changeValue,
         };
@@ -228,9 +229,19 @@
     </div>
 
     <div class="border-gray-300 border-t px-1" />
-    <div class="flex-col text-sm space-y-1">
-      <DateValue date={pnl.startDate} value={pnl.startPnl} {privateMode} />
-      <DateValue date={pnl.endDate} value={pnl.endPnl} {privateMode} />
+    <div class="flex-col space-y-1">
+      <DateValue
+        date={pnl.startDate}
+        value={pnl.startPnl}
+        ratio={pnl.startRatio}
+        {privateMode}
+      />
+      <DateValue
+        date={pnl.endDate}
+        value={pnl.endPnl}
+        ratio={pnl.endRatio}
+        {privateMode}
+      />
     </div>
   </div>
 
