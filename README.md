@@ -17,4 +17,4 @@ Hope this widget is useful to you!
 
 ## Samples
 
-![PnL Widget](https://raw.githubusercontent.com/mani-coder/wealthica-pnl-widget/main/public/samples/pnl-widget.png)
+![PnL Widget](https://raw.githubusercontent.com/mani-coder/wealthica-pnl-widget/main/samples/pnl-widget.png)
