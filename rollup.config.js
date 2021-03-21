@@ -36,7 +36,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		file: 'public/assets/bundle.js',
 	},
 	plugins: [
 		svelte({
@@ -70,6 +70,7 @@ export default {
 		resolve({
 			browser: true,
 			dedupe: ['svelte']
+
 		}),
 		commonjs(),
 		typescript({ inlineSources: !production }),
