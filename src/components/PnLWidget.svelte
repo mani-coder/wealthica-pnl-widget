@@ -229,7 +229,7 @@
     </div>
 
     <div class="border-gray-300 border-t px-1" />
-    <div class="flex-col text-sm px-1 space-y-1">
+    <div class="flex-col text-sm space-y-1">
       <DateValue date={pnl.startDate} value={pnl.startPnl} {privateMode} />
       <DateValue date={pnl.endDate} value={pnl.endPnl} {privateMode} />
     </div>
