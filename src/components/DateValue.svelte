@@ -8,14 +8,14 @@
 </script>
 
 <div class="flex w-full text-xs justify-between text-gray-600">
-  <div class="font-extralight">{date}</div>
+  <div class="font-light">{date}</div>
 
   <div class="text-left">
     <span>{ratio.toFixed(2)}%</span>{" "}
     {#if privateMode}
       $--
     {:else}
-      <span class="font-extralight">
+      <span class="font-light">
         ({value >= 0 ? "" : "-"}${formatCurrency(Math.abs(value), 2)})
       </span>
     {/if}

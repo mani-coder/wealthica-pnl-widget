@@ -189,7 +189,7 @@
   <!-- <img src="favicon.png" alt="P/L" width={20} height={20} /> -->
 
   <h5 class="my-2 text-base font-bold text-center text-gray-500">
-    {pnl.label} PnL Change
+    {`${pnl.label} PnL Change`.toUpperCase()}
   </h5>
 
   <div class="flex flex-col space-y-1 w-full p-2 bg-gray-100 rounded-lg">
@@ -229,7 +229,7 @@
     </div>
 
     <div class="border-gray-300 border-t px-1" />
-    <div class="flex-col space-y-1">
+    <div class="flex-col space-y-1 pt-1">
       <DateValue
         date={pnl.startDate}
         value={pnl.startPnl}
@@ -245,7 +245,7 @@
     </div>
   </div>
 
-  <div class="w-full my-2 px-1">
+  <div class="w-full my-3 px-1">
     <PnLRanges {data} onClick={handlePnlClick} {selectedPnLIndex} />
   </div>
 </div>
