@@ -230,7 +230,16 @@
     </div>
 
     <div class="border-gray-300 border-t px-1" />
+
     <div class="flex-col space-y-1 pt-1">
+      <div class="flex text-xs font-extralight text-gray-400">
+        <span class="w-5/12">Date</span>
+        <div class="flex w-7/12 pl-1 justify-between">
+          <span>P/L %</span>
+          <span>P/L</span>
+        </div>
+      </div>
+
       <DateValue
         date={pnl.startDate}
         value={pnl.startPnl}
@@ -246,7 +255,7 @@
     </div>
   </div>
 
-  <div class="w-full my-3 px-1">
+  <div class="w-full mt-3 px-1">
     <PnLRanges {data} onClick={handlePnlClick} {selectedPnLIndex} />
   </div>
 </div>
