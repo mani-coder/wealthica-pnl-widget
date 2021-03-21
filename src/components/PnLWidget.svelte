@@ -188,8 +188,9 @@
 <div class="w-full h-full overflow-scroll">
   <!-- <img src="favicon.png" alt="P/L" width={20} height={20} /> -->
 
-  <h5 class="my-0 mb-1 text-base font-bold text-center text-gray-500">
-    {`${pnl.label} PnL Change`.toUpperCase()}
+  <h5 class="my-0 mb-1 text-sm text-center text-gray-500">
+    <div class="font-semibold">PNL CHANGE</div>
+    <div class="font-bold">{pnl.label.toUpperCase()}</div>
   </h5>
 
   <div class="flex flex-col space-y-1 w-full p-2 bg-gray-100 rounded-lg">
