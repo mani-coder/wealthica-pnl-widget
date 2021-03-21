@@ -155,8 +155,8 @@
   function loadPortfolioData(options) {
     console.debug("[pnl-widget] Loading portfolio data.");
     const query = {
-      from: options.dateRangeFilter && options.dateRangeFilter[0],
-      to: options.dateRangeFilter && options.dateRangeFilter[1],
+      from: options.fromDate,
+      to: options.toDate,
       groups: options.groupsFilter,
       institutions: options.institutionsFilter,
       investments:
@@ -205,7 +205,7 @@
 
   function loadTransactions(options) {
     console.debug("[pnl-widget] Loading transactions data.");
-    const fromDate = options.dateRangeFilter && options.dateRangeFilter[0];
+    const fromDate = options.fromDate;
     const query = {
       from:
         fromDate && fromDate < TRANSACTIONS_FROM_DATE
@@ -236,7 +236,7 @@
 <main>
   <div class="container m-auto">
     {#if loading}
-      <div class="flex justify-center items-center w-full h-full">
+      <div class="flex justify-center py-2 w-full h-full">
         <Loading />
       </div>
     {:else if portfolios}
