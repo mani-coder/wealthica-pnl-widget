@@ -189,7 +189,7 @@
   <!-- <img src="favicon.png" alt="P/L" width={20} height={20} /> -->
 
   <h5 class="my-0 mb-1 text-sm text-center text-gray-500">
-    <div class="font-semibold">PNL CHANGE</div>
+    <div class="font-semibold">P&L % CHANGE</div>
     <div class="font-bold">{pnl.label.toUpperCase()}</div>
   </h5>
 
@@ -206,7 +206,7 @@
       >
         <div class="text-base font-medium">
           <Tooltip
-            tooltip="This the percentage change in your PnL ratio for the selected date range."
+            tooltip="This is the difference between your latest P&L % and P&L % for the selected date."
           >
             <div>{pnl.changeRatio.toFixed(2)}%</div>
           </Tooltip>
@@ -216,7 +216,7 @@
             $--
           {:else}
             <Tooltip
-              tooltip="This the difference between your PnL's for the selected date range."
+              tooltip="This is the difference between your latest P&L and the P&L for the selected date."
             >
               <span>
                 {pnl.changeValue >= 0 ? "" : "-"}${Math.abs(
@@ -232,11 +232,11 @@
     <div class="border-gray-300 border-t px-1" />
 
     <div class="flex-col space-y-1 pt-1">
-      <div class="flex text-xs font-extralight text-gray-400">
+      <div class="flex text-xs font-light text-gray-500">
         <span class="w-5/12">Date</span>
         <div class="flex w-7/12 pl-1 justify-between">
-          <span>P/L %</span>
-          <span>P/L</span>
+          <span>P&L %</span>
+          <span>P&L</span>
         </div>
       </div>
 
