@@ -186,7 +186,7 @@
 </script>
 
 <div class="w-full h-full overflow-scroll">
-  <!-- <img src="favicon.png" alt="P/L" width={20} height={20} /> -->
+  <!-- <img src="favicon.png" alt="P&L" width={20} height={20} /> -->
 
   <h5 class="my-0 mb-1 text-sm text-center text-gray-500">
     <div class="font-semibold">P&L % CHANGE</div>
