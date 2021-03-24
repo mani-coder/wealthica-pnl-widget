@@ -1,7 +1,5 @@
 <script lang="ts">
   import { Addon } from "@wealthica/wealthica.js/index";
-  import moment from "moment";
-  import { onMount } from "svelte";
   import {
     parseCurrencyReponse,
     parseInstitutionsResponse,
@@ -121,13 +119,11 @@
     sortedDates.forEach((date) => {
       const portfolio = portfolioPerDay[date];
       deposits += portfolio.deposit - portfolio.withdrawal;
-      if (moment(date).isoWeekday() <= 5) {
-        _portfolios.push({
-          date: date,
-          value: portfolio.value,
-          deposits: deposits,
-        });
-      }
+      _portfolios.push({
+        date: date,
+        value: portfolio.value,
+        deposits: deposits,
+      });
     });
 
     portfolios = _portfolios;
