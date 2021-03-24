@@ -11,21 +11,16 @@
   export let portfolios: Portfolio[] = [];
   export let privateMode: boolean;
   let selectedPnLIndex = 0;
+  const portfolioByDate = portfolios.reduce((hash, portfolio) => {
+    hash[portfolio.date] = portfolio;
+    return hash;
+  }, {} as { [K: string]: Portfolio });
 
   const portfolioReverse = portfolios.slice().reverse();
   const DATE_DISPLAY_FORMAT = "MMM DD, YYYY";
 
   function getNearestPortfolioDate(date: string): Portfolio | undefined {
-    const dateObj = moment(date);
-    if (dateObj.isoWeekday() >= 5) {
-      date = dateObj
-        .add(dateObj.isoWeekday() === 6 ? 2 : 1, "days")
-        .format("YYYY-MM-DD");
-    }
-    const portfolio = portfolioReverse.find(
-      (portfolio) => portfolio.date <= date
-    );
-    return portfolio;
+    return portfolioByDate[date];
   }
 
   function getData() {
