@@ -5,7 +5,7 @@ Wealthica widget for checking the PnL changes for well known time periods like 1
 Steps to load the addon:
 
 1. Sign in into your Wealthica account
-2. Under widgets, click on the three dots and select "Manage Widgets"
+2. Under widgets in the dashboard, click on the three dots and select "Manage Widgets"
 3. Select Developer Widget to the top 3 widgets
 4. Then click on the three dots in the developer widget and select "Configure"
 5. In the Widget URL input box, paste https://mani-coder.github.io/wealthica-pnl-widget/ URL and click "Save"
