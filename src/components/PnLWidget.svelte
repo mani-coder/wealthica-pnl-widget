@@ -16,7 +16,6 @@
     return hash;
   }, {} as { [K: string]: Portfolio });
 
-  const portfolioReverse = portfolios.slice().reverse();
   const DATE_DISPLAY_FORMAT = "MMM DD, YYYY";
 
   function getNearestPortfolioDate(date: string): Portfolio | undefined {
@@ -24,14 +23,14 @@
   }
 
   function getData() {
-    let currentPortfolio = portfolioReverse[0];
+    let currentPortfolio = portfolios[portfolios.length - 1];
     const currentDate = moment().utc();
     if (
       currentDate.format("YYYY-MM-DD") === currentPortfolio.date &&
       currentDate.hour() < 20 &&
-      portfolioReverse.length > 1
+      portfolios.length > 1
     ) {
-      currentPortfolio = portfolioReverse[1];
+      currentPortfolio = portfolios[portfolios.length - 2];
     }
     const lastDate = currentPortfolio.date;
 
