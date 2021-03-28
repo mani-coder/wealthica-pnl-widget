@@ -32,6 +32,13 @@
     ) {
       currentPortfolio = portfolios[portfolios.length - 2];
     }
+    if (moment(currentPortfolio.date).isoWeekday() > 5) {
+      const weekday = getPreviousWeekday(currentPortfolio.date).format(
+        "YYYY-MM-DD"
+      );
+      currentPortfolio = portfolioByDate[weekday];
+    }
+
     const lastDate = currentPortfolio.date;
 
     const portfolioValues: {
