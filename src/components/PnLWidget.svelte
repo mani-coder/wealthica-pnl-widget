@@ -41,6 +41,7 @@
 
     const lastDate = currentPortfolio.date;
 
+    const portfolioKeys = new Set();
     const portfolioValues: {
       id: string;
       label: string;
@@ -111,13 +112,17 @@
         value.date.format("YYYY-MM-DD")
       );
       if (portfolio) {
-        portfolioValues.push({
-          id: value.id,
-          label: value.label,
-          date: value.date,
-          startPortfolio: portfolio,
-          endPortfolio: currentPortfolio,
-        });
+        const key = `${portfolio.date}-${currentPortfolio.date}`;
+        if (!portfolioKeys.has(key)) {
+          portfolioValues.push({
+            id: value.id,
+            label: value.label,
+            date: value.date,
+            startPortfolio: portfolio,
+            endPortfolio: currentPortfolio,
+          });
+          portfolioKeys.add(key);
+        }
       }
     });
 
@@ -132,13 +137,17 @@
       );
 
       if (startPortfolio && endPortfolio) {
-        portfolioValues.push({
-          id: `FY ${year}`,
-          label: `Jan - Dec ${year}`,
-          date: startDate,
-          startPortfolio,
-          endPortfolio,
-        });
+        const key = `${startPortfolio.date}-${endPortfolio.date}`;
+        if (!portfolioKeys.has(key)) {
+          portfolioValues.push({
+            id: `FY ${year}`,
+            label: `Jan - Dec ${year}`,
+            date: startDate,
+            startPortfolio,
+            endPortfolio,
+          });
+          portfolioKeys.add(key);
+        }
       }
     });
 
