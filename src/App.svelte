@@ -152,6 +152,7 @@
   function loadPortfolioData(options) {
     console.debug("[pnl-widget] Loading portfolio data.");
     const query = {
+      assets: false,
       from: options.fromDate,
       to: options.toDate,
       groups: options.groupsFilter,
@@ -174,7 +175,7 @@
   function loadInstitutionsData(options) {
     console.debug("[pnl-widget] Loading institutions data..");
     const query = {
-      assets: true,
+      assets: false,
       groups: options.groupsFilter,
       institutions: options.institutionsFilter,
       investments:
@@ -204,6 +205,7 @@
     console.debug("[pnl-widget] Loading transactions data.");
     const fromDate = options.fromDate;
     const query = {
+      assets: false,
       from:
         fromDate && fromDate < TRANSACTIONS_FROM_DATE
           ? fromDate
