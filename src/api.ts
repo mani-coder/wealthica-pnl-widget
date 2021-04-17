@@ -116,7 +116,7 @@ export function parseTransactionsResponse(
       if (["deposit"].includes(type)) {
         portfolioData.deposit += amount;
       } else if (type === "transfer") {
-        if (!["FXT"].includes(transaction.origin_type)) {
+        if (!["FXT", "ExchTrade"].includes(transaction.origin_type)) {
           portfolioData.deposit += amount;
         }
       } else if (["fee", "interest", "tax"].includes(type)) {
