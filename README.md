@@ -13,5 +13,6 @@ Sample Widget: https://mani-coder.dev/mani-coder/wealthica-portfolio-addon/widge
 
 If you have been using this widget as a developer widget and are looking to migrate to the new widget URL, simply change the URL to https://mani-coder.dev/mani-coder/wealthica-portfolio-addon/widgets/pnl/?developer in the configure settings.
 
-https://ik.imagekit.io/manicoder/wealthica-portfolio-addon/Widget_Configure_KQ3Hqz1cW.png
+
+![Configure](https://ik.imagekit.io/manicoder/wealthica-portfolio-addon/Widget_Configure_KQ3Hqz1cW.png)
 
