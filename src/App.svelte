@@ -53,17 +53,13 @@
   async function load(options) {
     privateMode = options.privateMode;
     loading = true;
-    const [
-      currencyData,
-      portfolioData,
-      accounts,
-      transactions,
-    ] = await Promise.all([
-      loadCurrenciesCache(),
-      loadPortfolioData(options),
-      loadInstitutionsData(options),
-      loadTransactions(options),
-    ]);
+    const [currencyData, portfolioData, accounts, transactions] =
+      await Promise.all([
+        loadCurrenciesCache(),
+        loadPortfolioData(options),
+        loadInstitutionsData(options),
+        loadTransactions(options),
+      ]);
     currencyCache = currencyData ? currencyData : currencyCache;
     computePortfolios(portfolioData, transactions, accounts, currencyCache);
     loading = false;
@@ -240,6 +236,17 @@
           <Loading />
         </div>
       {:else if portfolios}
+        <div
+          class="flex justify-center items-center flex-col w-full text-red-400 mb-2"
+        >
+          <div class="text-xl font-bold">DEPRECATED</div>
+          <a
+            target="_blank"
+            href="https://github.com/mani-coder/wealthica-pnl-widget/blob/main/README.md#migration"
+            >Read More</a
+          >
+        </div>
+
         <PnLWidget {portfolios} {privateMode} />
       {:else}
         <p>No Data</p>
