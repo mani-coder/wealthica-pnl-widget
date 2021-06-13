@@ -15,3 +15,4 @@ You can migrate to the new widget URL by simply changing the URL to https://mani
 
 ![Configure](https://ik.imagekit.io/manicoder/wealthica-portfolio-addon/Widget_Configure_KQ3Hqz1cW.png)
 
+Please note that the current https://mani-coder.github.io/wealthica-pnl-widget/ widget page associated with this repository won't be updated going forward.
