@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This repository is deprecated in favor of the new consolidated [mani-coder/wealthica-addons](https://github.com/mani-coder/wealthica-addons) repository.
+
 ## Wealthica P&L % Change Widget
 
 Wealthica widget for checking the P&L changes for well known time periods like 1D, WTD (Week To Date), MTD (Month To Date) etc.,. P&L is computed using the portfolio value against the deposits/withdrawals. This widget is an inspiration from one of the P&L chart in the [P&L Timeline addon](https://github.com/mani-coder/wealthica-portfolio-addon).
@@ -14,6 +18,3 @@ You can take a quick look at the charts using the demo data -- https://mani-code
 
 Hope this widget is useful to you!
 
-## Samples
-
-![P&L Widget](https://raw.githubusercontent.com/mani-coder/wealthica-pnl-widget/main/samples/pnl-widget.png)
